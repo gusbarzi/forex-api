@@ -12,18 +12,19 @@ export class TransactionService {
         private readonly usersService: UsersService
     ) {}
 
-  async create(createTransactionDto: CreateTransactionDto) {
+    async create(createTransactionDto: CreateTransactionDto) {
 
     const transaction = new this.transactionModel(createTransactionDto);
     transaction.dateCreate = new Date()
     
-    const user = await this.usersService.findOne(createTransactionDto.userId)
-    user.balance = user.balance - createTransactionDto.amount
+    const user = await this.usersService.findOne(createTransactionDto.userId);
+    transaction.balance = user.balance
     transaction.firstName = user.firstName
     transaction.lastName = user.lastName
 
     await this.usersService.update(user.id, user)
     return transaction.save();
+
   }
 
   async findBindUserId(userId: string) {

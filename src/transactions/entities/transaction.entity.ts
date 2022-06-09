@@ -12,7 +12,7 @@ export class Transaction {
   lastName: string;
 
   @Prop()
-  amount: number;
+  balance: number;
 
   @Prop()
   dateCreate: Date;

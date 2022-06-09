@@ -33,7 +33,6 @@ export class UsersService {
 
   deposit(id: string, updateUserDto: UpdateUserDto) {
     const balance = this.userModel.findById(id)
-    console.log(balance);
     return this.userModel.findByIdAndUpdate({
       _id: id
     }, {
