@@ -48,4 +48,14 @@ export class UsersService {
       _id: id
     }).exec();
   }
+
+  async signin(user) {
+    const filter = {
+      email: user.email,
+      password: user.password
+    }
+    const userExist = await this.userModel.findOne(filter)
+    if(!userExist) return {menssager: 'Login fail'}
+    return userExist
+  }
 }

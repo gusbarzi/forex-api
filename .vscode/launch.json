@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "name": "Started Booking API",
+            "command": "npm run start:dev",
+            "request": "launch",
+        }
+    ]
+}
