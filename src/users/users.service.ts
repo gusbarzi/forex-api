@@ -2,14 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument} from './entities/user.entity';
+import { User, UserDocument } from './entities/user.entity';
 import { Model } from 'mongoose'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
   create(createUserDto: CreateUserDto) {
     const user = new this.userModel(createUserDto);
+
+    const existEmail = this.userModel.find({ email: user.email });
+    const existPassword = this.userModel.find({ password: user.password });
+
+    if (existEmail) return { error: 'User already exists' }
+    if (existPassword) return { error: 'User already exists' }
     return user.save();
   }
 
@@ -54,7 +60,7 @@ export class UsersService {
       password: user.password
     }
     const userExist = await this.userModel.findOne(filter)
-    if(!userExist) return {menssager: 'Login fail'}
+    if (!userExist) return { menssager: 'Login fail' }
     return userExist
   }
 }
