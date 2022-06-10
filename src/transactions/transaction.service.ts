@@ -8,17 +8,17 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class TransactionService {
   constructor(
-      @InjectModel(Transaction.name) private transactionModel: Model<TransactionDocument>,
-        private readonly usersService: UsersService
-    ) {}
+    @InjectModel(Transaction.name) private transactionModel: Model<TransactionDocument>,
+    private readonly usersService: UsersService
+  ) { }
 
-    async create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto) {
 
     const transaction = new this.transactionModel(createTransactionDto);
     transaction.dateCreate = new Date()
-    
+
     const user = await this.usersService.findOne(createTransactionDto.userId);
-    transaction.balance = user.balance
+    transaction.balance = transaction.balance - user.balance;
     transaction.firstName = user.firstName
     transaction.lastName = user.lastName
 
@@ -34,5 +34,5 @@ export class TransactionService {
     const transacExist = await this.transactionModel.find(filter)
 
     return transacExist
- }
+  }
 }
