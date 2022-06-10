@@ -7,15 +7,9 @@ import { Model } from 'mongoose'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   create(createUserDto: CreateUserDto) {
     const user = new this.userModel(createUserDto);
-
-    const existEmail = this.userModel.find({ email: user.email });
-    const existPassword = this.userModel.find({ password: user.password });
-
-    if (existEmail) return { error: 'User already exists' }
-    if (existPassword) return { error: 'User already exists' }
     return user.save();
   }
 
